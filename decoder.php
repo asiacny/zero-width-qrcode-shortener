@@ -1,4 +1,4 @@
- <?php
+<?php
 require_once 'config.php';
 function from_zerowidth_to10($num) {
     $from = 2;
@@ -19,7 +19,7 @@ try {
 catch(Exception $e) {
     die($e);
 }
-if(strpos($_GET['q'],'​') !==false){
+if(strpos($_GET['q'],'​') !==false || strpos($_GET['q'],'‌') !==false){
 	$zeroid = str_replace('/','',$_GET['q']);
 	$zeroid = str_replace('​','0',$zeroid);
 	$zeroid = str_replace('‌','1',$zeroid);
