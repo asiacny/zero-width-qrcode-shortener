@@ -1,4 +1,6 @@
 <?php
+require_once "phpqrcode.php";
+require_once 'config.php';
 //10进制转62进制
 function from10_to62($num) {
     $to = 62;
@@ -43,10 +45,16 @@ function from10_to_zerowidth($num) {
     } while ($num > 0);
     return $ret;
 }
-require_once "phpqrcode.php";
-require_once 'config.php';
+//文本生成二维码base64字符串
+function qrbase64($text) {
+    ob_start();
+    QRcode::png($text, false, L, 10, 1, false);
+    $image = ob_get_clean();
+    header('Content-Type: text/html');
+	$ret = base64_encode($image);
+    return $ret;
+}
 $url = $_POST['url'];
-error_reporting(E_ALL);
 if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
     echo '<h3 style="color:#FF0000;">Invalid url should start with http:// or https:// </h3>';
 } elseif ($url == 'http://' || $url == 'https://' || $url == 'itms-services://') {
@@ -59,9 +67,9 @@ if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
         die($e);
     }
     try {
-        $stmt = $db->prepare("INSERT INTO main (id, url, shortened, count, ip, create_time, user_agent, referer) VALUES (:id, :urlinput, :shorturl, :count, :ip, :createtime, :useragent, :referer);");
+        $stmt = $db->prepare("INSERT INTO main (id, url, shortened, count, ip, create_time, user_agent, referer) VALUES (:id, :url, :shorturl, :count, :ip, :createtime, :useragent, :referer);");
         $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':urlinput', $urlinput);
+        $stmt->bindParam(':url', $url);
         $stmt->bindParam(':shorturl', $shorturl);
         $stmt->bindParam(':count', $count);
         $stmt->bindParam(':ip', $ip);
@@ -69,7 +77,6 @@ if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
         $stmt->bindParam(':useragent', $useragent);
         $stmt->bindParam(':referer', $referer);
         $zeroid = from10_to_zerowidth($id);
-        $urlinput = $url;
         $shorturl = from10_to58($id);
         $count = '0';
         $createtime = date("Y-m-d H:i:s");
@@ -82,20 +89,12 @@ if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
     }
     echo '<h3 style="color:#228B22;">Your Zero Width url is:  <a id="zerourl" href="' . "$domain/$zeroid" . '/" target="_blank">' . "$domain/$zeroid" . '/</a></h3>';
     echo '<h3 style="color:#228B22;">Your Short url is:  <a id="shorturl" href="' . "$domain/$shorturl" . '" target="_blank">' . "$domain/$shorturl" . '</a></h3>';
-    ob_start();
-    QRcode::png($domain . '/' . $shorturl, false, L, 10, 1, false);
-    $image = ob_get_clean();
-    header('Content-Type: text/html');
     echo '
-	<h3><img src="data:image/png;base64,'.base64_encode($image).'"></h3>';
+	<h3><img src="data:image/png;base64,'.qrbase64($domain.'/'.$shorturl).'"></h3>';
     echo '
 	<h3 style="color:#228B22;">Your url is:  <a href="' . $url . '" target="_blank">' . $url . '</a></h3>';
-    ob_start();
-    QRcode::png($url, false, L, 10, 1, false);
-    $image2 = ob_get_clean();
-    header('Content-Type: text/html');
     echo '
-	<h3><img src="data:image/png;base64,'.base64_encode($image2).'"></h3>';
+	<h3><img src="data:image/png;base64,'.qrbase64($url).'"></h3>';
     $db = null;
 }
 ?>
