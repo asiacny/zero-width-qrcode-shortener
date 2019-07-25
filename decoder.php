@@ -12,36 +12,36 @@ function from_zerowidth_to10($num) {
 	}
 	return $dec;
 }
-$url = $_GET["q"];
+$shortened = $_GET["q"];
 try {
     $db = new PDO("sqlite:$sqlitedb") or die("fail to connect db");
 }
 catch(Exception $e) {
     die($e);
 }
-if(strpos($_GET['q'],'​') !==false || strpos($_GET['q'],'‌') !==false){
-	$zeroid = str_replace('/','',$_GET['q']);
+if(strpos($shortened,'​') !==false || strpos($shortened,'‌') !==false){
+	$zeroid = str_replace('/','',$shortened);
 	$zeroid = str_replace('​','0',$zeroid);
 	$zeroid = str_replace('‌','1',$zeroid);
 	$zeroid = from_zerowidth_to10($zeroid);
 	$result = $db->query("SELECT * from main where id='$zeroid' LIMIT 0, 1");
 	while ($row = $result->fetchObject()) {
-		$res = $row->url;
-		$url = $row->shortened;
+		$url = $row->url;
+		$shortened = $row->shortened;
 	}
 }else{
-	$result = $db->query("SELECT * from main where shortened='$url' LIMIT 0, 1");
+	$result = $db->query("SELECT * from main where shortened='$shortened' LIMIT 0, 1");
 	while ($row = $result->fetchObject()) {
-		$res = $row->url;
+		$url = $row->url;
 	}
 }
-if (!empty($res)) {
+if (!empty($url)) {
 	if ($countset === '1') {
 		$lasttime = date("Y-m-d H:i:s");
-		$db->query("UPDATE main set count=count+1,last_time='$lasttime' where shortened='$url'");
+		$db->query("UPDATE main set count=count+1,last_time='$lasttime' where shortened='$shortened'");
 	}
     header("HTTP/1.1 301 Moved Permanently");
-    header("location:" . $res);
+    header("location:" . $url);
 } else {
     header("HTTP/1.1 301 Moved Permanently");
     header("location:" . $domain);
