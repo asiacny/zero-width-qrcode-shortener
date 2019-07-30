@@ -62,6 +62,14 @@ if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
 } else {
     try {
         $db = new PDO("sqlite:$sqlitedb") or die("fail to connect db");
+		//重复记录判断
+		$i=0;
+		do {
+			$i++;
+			$id = rand(3364, 195112);	//如有需要，此处应和config.php中相同
+			$sql = "SELECT COUNT(*) as count FROM main where id=$id;";
+			$id_count= $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+		} while ( $id_count[0]['count']>0 && $i<10 );
     }
     catch(Exception $e) {
         die($e);
