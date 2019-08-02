@@ -1,5 +1,9 @@
 # 说明
-#演示地址:https://ml.mk  
+#演示地址:
+
+https://ml.mk
+
+https://demo.ml.mk
 
 1.解压本程序到域名根目录  
 
