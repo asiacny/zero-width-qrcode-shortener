@@ -96,6 +96,12 @@ input[type=submit]:hover {
     background-color: #000000;
 }
 
+input[type=submit]:focus {
+    border-color: #000000;
+    background-color: #000000;
+    outline: 0;
+}
+
 div {
     padding: 1px;
     display: inline-block;
