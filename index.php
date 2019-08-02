@@ -32,39 +32,72 @@ function showUser(str) {
 }
 </script>
 <style>
-input[type=text],select {
-    width: 600px;
+input[type=text] {
+    width: 500px;
+    -webkit-transition: .7s;
+    transition: .7s;
+    background-color: #f7f7f7;
     padding: 12px 15px;
     margin: 10px 5;
-    display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 30px;
     box-sizing: border-box;
-}
-
-input[type=submit] {
-    width: 200px;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 15px;
-    margin: 10px 5;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
+@media (max-width: 767px) {
+input[type=text] {
+    width: 350px;
+    -webkit-transition: .7s;
+    transition: .7s;
+    background-color: #f7f7f7;
+    padding: 12px 15px;
+    margin: 10px 5;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    box-sizing: border-box;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+}
+
+input[type=text]:focus {
+    border-color: rgba(108,99,255,.5);
+    outline: 0;
+    background-color: #fff;
+}
+
+
+input[type=submit] {
+    width: 150px;
+    border-color: #000000;
+    background-color: #000000;
+    padding: 14px 15px;
+    margin: 10px 5;
+    color: white;
+    border-radius: 30px;
+    font-weight: 400;
+    white-space: nowrap;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.3em;
+    transition: .7s;
+    text-align: center;
+    text-decoration: none;
+}
+
 input[type=submit]:hover {
-    background-color: #45a049;
+    border-color: #000000;
+    background-color: #000000;
 }
 
 div {
-    width: 610px;
-    border-radius: 5px;
-    background-color: #A9A9A9;
-    padding: 5px;
+    padding: 1px;
     display: inline-block;
     display: block;
     margin-left: auto;
@@ -81,16 +114,13 @@ div {
 }
 
 h2 {
-    width: 350px;
-    border-radius: 5px;
-    background-color: #DCDCDC;
-    padding: 5px;
+    font-size: 2em;
+    margin: .67em 0;
     display: inline-block;
     display: block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    color: #0000FF;
 }
 
 h3 {
@@ -104,7 +134,7 @@ h3 {
 <h2>Url Shortener</h2>
 <div>
 <form>
-<input id="url" type="text" name="url" placeholder="Enter Your URL...">
+<input id="url" type="text" name="url" required="" autofocus="" placeholder="Enter Your URL (http:// or https://)...">
 <input type="submit" value="Shorten" onclick="showUser(url.value); return false;">
 </form>
 </div>
