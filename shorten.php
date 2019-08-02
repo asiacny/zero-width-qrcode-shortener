@@ -95,12 +95,12 @@ if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
     catch(Exception $e) {
         die($e);
     }
-    echo '<h3 style="color:#228B22;">Your Zero Width url is:  <a id="zerourl" href="' . "$domain/$zeroid" . '/" target="_blank">' . "$domain/$zeroid" . '/</a></h3>';
-    echo '<h3 style="color:#228B22;">Your Short url is:  <a id="shorturl" href="' . "$domain/$shorturl" . '" target="_blank">' . "$domain/$shorturl" . '</a></h3>';
+    echo '<h3 style="color:#bdbdbd;">Zero Width url:&nbsp;&nbsp<a id="zerourl" style="color:#000000;text-decoration:none;" href="' . "$domain/$zeroid" . '/" target="_blank">' . "$domain/$zeroid" . '/</a></h3>';
+    echo '<h3 style="color:#bdbdbd;">Short url:&nbsp;&nbsp<a id="shorturl" style="color:#000000;text-decoration:none;" href="' . "$domain/$shorturl" . '" target="_blank">' . "$domain/$shorturl" . '</a></h3>';
     echo '
 	<h3><img src="data:image/png;base64,'.qrbase64($domain.'/'.$shorturl).'"></h3>';
     echo '
-	<h3 style="color:#228B22;">Your url is:  <a href="' . $url . '" target="_blank">' . $url . '</a></h3>';
+	<h3 style="color:#bdbdbd;">Your url is:&nbsp;&nbsp<a style="color:#000000;text-decoration:none;" href="' . $url . '" target="_blank">' . $url . '</a></h3>';
     echo '
 	<h3><img src="data:image/png;base64,'.qrbase64($url).'"></h3>';
     $db = null;
