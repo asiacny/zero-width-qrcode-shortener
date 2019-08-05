@@ -55,7 +55,7 @@ function qrbase64($text) {
     return $ret;
 }
 $url = $_POST['url'];
-if (!preg_match("/(http|https|itms-services):\/\/(.*?)$/i", $url)) {
+if (!preg_match("/^(http|https|itms-services):\/\/(.*?)$/i", $url)) {
     echo '<h3 style="color:#FF0000;">Invalid url should start with http:// or https:// </h3>';
 } elseif ($url == 'http://' || $url == 'https://' || $url == 'itms-services://') {
     echo '<h3 style="color:#FF0000;">Invalid url</h3>';
