@@ -30,6 +30,7 @@ if(strpos($shortened,'​') !==false || strpos($shortened,'‌') !==false){
 		$shortened = $row->shortened;
 	}
 }else{
+	$shortened = str_replace('/','',$shortened);
 	$result = $db->query("SELECT * from main where shortened='$shortened' LIMIT 0, 1");
 	while ($row = $result->fetchObject()) {
 		$url = $row->url;
