@@ -1,0 +1,60 @@
+sqlite可直接使用(数据库文件urls.sqlite)，无需重复创建，但需保证数据库可写(chmod 666 urls.sqlite;chown www:www urls.sqlite)
+
+----mysql数据库----
+主表创建
+CREATE TABLE main(
+aid int primary key not null auto_increment,
+id int,
+url varchar(4000),
+shortened varchar(10),
+count int,
+ip varchar(100),
+area varchar(300),
+create_time varchar(30),
+last_time varchar(30),
+user_agent varchar(300),
+referer varchar(4000));
+
+日志表创建
+CREATE TABLE log(
+aid int primary key not null auto_increment,
+url varchar(4000),
+shortened varchar(20),
+ip varchar(100),
+area varchar(300),
+time varchar(30),
+user_agent varchar(300),
+referer varchar(4000));
+----mysql数据库----
+
+
+----oracle数据库----
+不加引号oracle会把表名、字段名转换为大写
+主表创建
+CREATE TABLE "main"(
+"aid" int GENERATED ALWAYS AS IDENTITY,
+"id" int,
+"url" varchar(4000),
+"shortened" varchar(10),
+"count" int,
+"ip" varchar(100),
+"area" varchar(300),
+"create_time" varchar(30),
+"last_time" varchar(30),
+"user_agent" varchar(300),
+"referer" varchar(4000));
+
+插入一条数据，否则重复判断会报错
+INSERT INTO "main" ("id") VALUES (1)
+
+日志表创建
+CREATE TABLE "log"(
+"aid" int GENERATED ALWAYS AS IDENTITY,
+"url" varchar(4000),
+"shortened" varchar(200),
+"ip" varchar(100),
+"area" varchar(300),
+"time" varchar(30),
+"user_agent" varchar(300),
+"referer" varchar(4000));
+----oracle数据库----
