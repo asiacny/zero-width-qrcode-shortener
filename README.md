@@ -13,7 +13,7 @@ https://ml.mk
 <br><br>
 注:
 <br>
-默认使用sqlite文本数据库，访问量大请自行修改为oracle、mysql或关闭日志记录
+默认使用sqlite文本数据库，访问量大请改为oracle、mysql或关闭日志记录
 <br>
 phpliteadmin.php为第三方单文件sqlite管理程序，默认中文，密码admin
 <br><br>
