@@ -51,7 +51,7 @@ function from10_to_zerowidth($num) {
 //文本生成二维码base64字符串
 function qrbase64($text) {
     ob_start();
-    QRcode::png($text, false, L, 10, 1, false);
+    @QRcode::png($text, false, L, 10, 1, false);
     $image = ob_get_clean();
     header('Content-Type: text/html');
     $ret = base64_encode($image);
