@@ -5,26 +5,26 @@ sqlite可直接使用(数据库文件urls.sqlite)，无需重复创建，但需�
 CREATE TABLE main(
 aid int primary key not null auto_increment,
 id int,
-url varchar(4000),
-shortened varchar(10),
+url varchar(4000) binary,
+shortened varchar(10) binary,
 count int,
-ip varchar(100),
-area varchar(300),
-create_time varchar(30),
-last_time varchar(30),
-user_agent varchar(300),
-referer varchar(4000));
+ip varchar(100) binary,
+area varchar(300) binary,
+create_time varchar(30) binary,
+last_time varchar(30) binary,
+user_agent varchar(300) binary,
+referer varchar(4000) binary);
 
 日志表创建
 CREATE TABLE log(
 aid int primary key not null auto_increment,
-url varchar(4000),
-shortened varchar(20),
-ip varchar(100),
-area varchar(300),
-time varchar(30),
-user_agent varchar(300),
-referer varchar(4000));
+url varchar(4000) binary,
+shortened varchar(200) binary,
+ip varchar(100) binary,
+area varchar(300) binary,
+time varchar(30) binary,
+user_agent varchar(300) binary,
+referer varchar(4000) binary);
 ----mysql数据库----
 
 

@@ -33,33 +33,35 @@ catch(Exception $e) {
     die($e);
 }
 $lasttime = date("Y-m-d H:i:s");
+$shortened = str_replace(array('/', '?', '？', '@', ')', '）', '(', '（', '+', '，', '.', '。', ',', '】', ']', '【', '[', '『', '』', '{', '}', '\\', '、', ' '),'',$shortened);
+
 if(strpos($shortened,"​") !==false || strpos($shortened,"‌") !==false){
-    $zeroid = str_replace('/','',$shortened);
-    $zeroid = str_replace('​','0',$zeroid);
+    $zeroid = str_replace('​','0',$shortened);
     $zeroid = str_replace('‌','1',$zeroid);
     $id = from_zerowidth_to10($zeroid);
     if ($dbconfig == "oracle") {
-        $sql = 'select * from "main" where "id"='.$id;
+        $sql = 'select * from "main" where "id"='."'".$id."'";
+    } elseif ($dbconfig == "mysql") {
+        $sql = 'select * from main where binary id='."'".$id."'";
     } else {
-        $sql = 'select * from main where id='.$id;
+        $sql = 'select * from main where id='."'".$id."'";
     }
     $result= $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     $url = $result[0]['url'];
     $id = "zeroid_".$result[0]['id'];
     $shortened = $result[0]['shortened'];
 }else{
-    $shortened = str_replace('/','',$shortened);
-
-    #错误链接矫正(非58进制请自行修改或删除以下代码)
+    #容错歧义(相似)字符(非58进制请自行修改或删除以下代码)
     if(strpos($shortened,"0") !==false || strpos($shortened,"O") !==false || strpos($shortened,"l") !==false || strpos($shortened,"I") !==false){
         $shortened = str_replace('0','o',$shortened);
         $shortened = str_replace('O','o',$shortened);
         $shortened = str_replace('l','1',$shortened);
         $shortened = str_replace('I','1',$shortened);
     }
-
     if ($dbconfig == "oracle") {
         $sql = 'select * from "main" where "shortened"='."'".$shortened."'";
+    } elseif ($dbconfig == "mysql") {
+        $sql = 'select * from main where binary shortened='."'".$shortened."'";
     } else {
         $sql = 'select * from main where shortened='."'".$shortened."'";
     }
@@ -88,6 +90,9 @@ if (!empty($url)) {
         if ($dbconfig == "oracle") {
             $db->exec('INSERT INTO "log" ("url", "shortened", "ip", "area", "time", "user_agent", "referer") VALUES ('."'".$url."'".', '."'".$id."'".', '."'".$ip."'".', '."'".$area."'".', '."'".$lasttime."'".', '."'".@$_SERVER[HTTP_USER_AGENT]."'".', '."'".@$_SERVER[HTTP_REFERER]."'".')');
             $db->exec('UPDATE "main" set "count"="count"+1,"last_time"='."'".$lasttime."'".' where "shortened"='."'".$shortened."'");
+        } elseif ($dbconfig == "mysql") {
+            $db->exec('INSERT INTO log (url, shortened, ip, area, time, user_agent, referer) VALUES ('."'".$url."'".', '."'".$id."'".', '."'".$ip."'".', '."'".$area."'".', '."'".$lasttime."'".', '."'".@$_SERVER[HTTP_USER_AGENT]."'".', '."'".@$_SERVER[HTTP_REFERER]."'".')');
+            $db->exec('UPDATE main set count=count+1,last_time='."'".$lasttime."'".' where binary shortened='."'".$shortened."'");
         } else {
             $db->exec('INSERT INTO log (url, shortened, ip, area, time, user_agent, referer) VALUES ('."'".$url."'".', '."'".$id."'".', '."'".$ip."'".', '."'".$area."'".', '."'".$lasttime."'".', '."'".@$_SERVER[HTTP_USER_AGENT]."'".', '."'".@$_SERVER[HTTP_REFERER]."'".')');
             $db->exec('UPDATE main set count=count+1,last_time='."'".$lasttime."'".' where shortened='."'".$shortened."'");
