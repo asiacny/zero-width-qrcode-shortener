@@ -31,7 +31,7 @@ function showUser(url_str,qr_str) {
         } else {
 			str = "url=" + encodeURIComponent(url_str);
 		}
-        xmlhttp.open("POST", "shorten.php", true);
+        xmlhttp.open("POST", "shorten", true);
         xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
         xmlhttp.send(str);
     }
