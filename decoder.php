@@ -14,7 +14,7 @@ function from_zerowidth_to10($num) {
     }
     return $dec;
 }
-$shortened = $_GET["q"];
+$shortened = ltrim(rawurldecode($_SERVER['REQUEST_URI']),"/");
 $shortenedsql = $shortened;
 $ip = @$_SERVER['HTTP_CF_CONNECTING_IP'].",". @$_SERVER['HTTP_X_FORWARDED_FOR'].",".@$_SERVER['HTTP_X_REAL_IP'].",".@$_SERVER['HTTP_CLIENT_IP'].",".@$_SERVER['REMOTE_ADDR'];
 if(!$ip) {
